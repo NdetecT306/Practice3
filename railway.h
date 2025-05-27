@@ -1,0 +1,1 @@
+double AllTrains(int n);
