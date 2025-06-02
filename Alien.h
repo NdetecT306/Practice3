@@ -4,7 +4,10 @@
 #include <cctype>
 #include <stdexcept>
 #include <sstream>
+#include <algorithm>
+#include <locale.h> 
 using namespace std;
 string reverseWord(const string& word);
 string alienTranslate(const string& sentence);
-vector<double> PayInMonth(double summa, int month, double p);
+int uniqueString();
+int battleClass();
