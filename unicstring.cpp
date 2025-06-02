@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <set>
+#include "Alien.h"
 using namespace std;
 struct RoundData {
     char symbol;
@@ -37,4 +38,3 @@ int uniqueString() {
     return 0;
 }
  
-
