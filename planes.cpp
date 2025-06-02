@@ -21,7 +21,7 @@ Airplane inputAirplaneData() {
 string toLower(const string& str) {
     string result = str;
     for (char& c : result) {
-        c = tolower(static_cast<unsigned char>(c)); 
+        c = tolower(static_cast<unsigned char>(c));
     }
     return result;
 }
@@ -31,20 +31,19 @@ vector<Airplane> filterAirplanes(const vector<Airplane>& airplanes, const string
     string criterionLower = toLower(criterion);
     string parameterLower = toLower(parameter);
     if (criterionLower == "авиакомпания") {
-        matchCriterion = [&](const Airplane& plane) { return toLower(plane.airline) == parameterLower; }; 
+        matchCriterion = [&](const Airplane& plane) { return toLower(plane.airline) == parameterLower; };
     }
     else if (criterionLower == "город") {
-        matchCriterion = [&](const Airplane& plane) { return toLower(plane.destinationCity) == parameterLower; }; 
+        matchCriterion = [&](const Airplane& plane) { return toLower(plane.destinationCity) == parameterLower; };
     }
     else if (criterionLower == "время") {
-        matchCriterion = [&](const Airplane& plane) { return plane.departureTime == parameterLower; }; // Сравниваем в нижнем регистре
+        matchCriterion = [&](const Airplane& plane) { return plane.departureTime == parameterLower; };
     }
     else {
         cout << "Неверный критерий." << endl;
         return {};
     }
     copy_if(airplanes.begin(), airplanes.end(), std::back_inserter(filteredAirplanes), matchCriterion);
-
     return filteredAirplanes;
 }
 int plain() {
@@ -53,7 +52,7 @@ int plain() {
     int numAirplanes;
     cout << "Введите количество самолетов: ";
     cin >> numAirplanes;
-    cin.ignore();
+    cin.ignore(); //  Удаляем символ новой строки после ввода числа самолетов
     for (int i = 0; i < numAirplanes; ++i) {
         cout << "Введите данные для самолета " << i + 1 << ":" << endl;
         airplanes.push_back(inputAirplaneData());
@@ -63,7 +62,9 @@ int plain() {
     getline(cin >> ws, sortCriterion);
     cout << "Введите параметр: ";
     getline(cin >> ws, sortParameter);
+
     vector<Airplane> filteredAirplanes = filterAirplanes(airplanes, sortCriterion, sortParameter);
+
     if (filteredAirplanes.empty()) {
         cout << "Самолеты, соответствующие критериям, не найдены." << endl;
     }
