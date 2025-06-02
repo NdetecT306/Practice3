@@ -1,12 +1,10 @@
-#include <vector>
-#include <iostream>
 #include <set>
-#include <string>
-#include <cctype>
-#include <stdexcept>
-#include <sstream>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+#include <array>
+#include <numeric>
 using namespace std;
-int ProstoeChislo();
-int String();
-int Credit(double summa, int month);
+#include "random.h"
 int Casino(int numParties);
+int Massiv();
