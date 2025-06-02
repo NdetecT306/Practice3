@@ -1,10 +1,4 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <sstream>
-#include <math.h>
-#include "headWithStrVec.h"
-using namespace std;
+#include "Alien.h"
 string reverseWord(const string& word)
 {
     string reversedWord = word;
@@ -32,17 +26,4 @@ string alienTranslate(const string& sentence)
         translatedSentence.pop_back();
     }
     return translatedSentence;
-}
-vector<double> PayInMonth(double summa, int month, double p) {
-    const double P = p / 12;
-    double summInMonth = (summa * P) / (1 - pow(1 + P, -month));
-    vector<double> ItogoSumma(month);
-    double peremSumma = summa;
-    for (int i = 0; i < month; ++i) {
-        double interest = peremSumma * P;
-        double needen = summInMonth - interest;
-        ItogoSumma[i] = summInMonth; 
-        peremSumma -= needen;
-    }
-    return ItogoSumma;
 }
