@@ -1,16 +1,4 @@
 #include "Intes.h"
-#include "random.h"
-#include "headWithStrVec.h"
-#include <array>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <iomanip>
-const int N = 10;
-using namespace std;
-using namespace std;
-const double p1 = 0.25;
-const double p2 = 0.49;
 int Casino(int numParties){
     vector<int> initialVal;
     vector<int> transformedVal;
@@ -56,100 +44,71 @@ int Casino(int numParties){
     cout << endl;
     return 0;
 }
-int Credit(double summa, int month) {
-    vector<double> monthlyPay1 = PayInMonth(summa, month, p1);
-    vector<double> monthlyPay2 = PayInMonth(summa, month, p2);
-    double pay1 = monthlyPay1[0], pay2 = monthlyPay2[0]; 
-    auto minMax1 = minmax_element(monthlyPay1.begin(), monthlyPay1.end());
-    auto minMax2 = minmax_element(monthlyPay2.begin(), monthlyPay2.end());
-    double maxPay = *minMax2.second, minPay = *minMax1.first;;
-    auto calculateTotalPayment = [&](const vector<double>& payments) -> double {
-        double total = 0.0;
-        for (double payment : payments) {
-            total += payment;
+int Massiv() {
+    auto is_prime = [](int n) {
+        if (n <= 1) return false;
+        for (int i = 2; i * i <= n; ++i) {
+            if (n % i == 0) return false;
         }
-        return total;
-    };
-    double totSumma1 = calculateTotalPayment(monthlyPay1), totSumma2 = calculateTotalPayment(monthlyPay2);
-    cout << fixed << setprecision(5) << "Ежемесячный платеж при минимальной ставке - " << minPay << " руб., а при максимальной - " << maxPay << " руб." << endl;
-    cout << "Кроме самого кредита, нужно будет выплатить " << totSumma1 - summa << " руб. при минимальной и " << totSumma2 - summa << " руб. при максимальной." << endl;
-    return 0;
-}
-int ProstoeChislo()
-{
-    array<int, N> numbers;
-    cout << "Введите 10 чисел: " << endl;
-    for (int i = 0; i < N; ++i) {
-        cin >> numbers[i];
-    }
-    vector<int> prostNum(numbers.begin(), numbers.end());
-    auto is_not_prime = [](int n) {
-        if (n <= 1) return true;
-        for (int i = 2; i <= sqrt(n); ++i) {
-            if (n % i == 0) return true;
-        }
-        return false;
+        return true;
         };
-    prostNum.erase(remove_if(prostNum.begin(), prostNum.end(), is_not_prime), prostNum.end());
-    cout << "Простые числа: ";
-    for (int e : prostNum) {
-        cout << e << " ";
+    array<int, 10> arr1;
+    array<int, 10> arr2;
+    cout << "Введите 10 чисел для первого массива:\n";
+    for (int i = 0; i < 10;) { 
+        try {
+            cout << "Введите число " << i+1 << ": ";
+            cin >> arr1[i];
+            if (cin.fail()) { 
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+                throw runtime_error("Не число. Введите еще раз.");
+            }
+            ++i; 
+        }
+        catch (const std::runtime_error& e) {
+            cerr << e.what() << std::endl;
+        }
     }
+    cout << "Введите 10 чисел для второго массива:\n";
+    for (int i = 0; i < 10; ) { 
+        try {
+            cout << "Введите число " << i + 1 << ": ";
+            cin >> arr2[i];
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                throw runtime_error("Не число. Введите еще раз.");
+            }
+            ++i; 
+        }
+        catch (const std::runtime_error& e) {
+            cerr << e.what() << endl;
+        }
+    }
+    array<int, 20> combined_arr;
+    copy(arr1.begin(), arr1.end(), combined_arr.begin());
+    copy(arr2.begin(), arr2.end(), combined_arr.begin() + 10);
+    sort(combined_arr.begin(), combined_arr.end(), greater<int>());
+    cout << "\nОбщий массив в порядке убывания:\n";
+    for (int num : combined_arr) cout << num << " ";
     cout << endl;
-    return 0;
-}
-
-int String()
-{
-    string sequence;
-    string target;
-    cout << "Введите последовательность цифр: ";
-    cin >> sequence;
-    try {
-        for (char c : sequence) {
-            if (!isdigit(c)) {
-                throw invalid_argument("Читать умеешь? Нужны только цифры.");
-            }
+    double sum = accumulate(combined_arr.begin(), combined_arr.end(), 0.0);
+    double average = sum / combined_arr.size();
+    array<int, 20> less_than_average;
+    int less_count = 0;
+    for (int num : combined_arr) {
+        if (num < average) {
+            less_than_average[less_count++] = num;
         }
     }
-    catch (const invalid_argument& e) {
-        cerr << e.what() << endl;
-        return 1;
+    cout << "\nМассив чисел, меньших среднего арифметического (" << average << "):\n";
+    for (int i = 0; i < less_count; ++i) cout << less_than_average[i] << " ";
+    cout << endl;
+    int prime_count = 0;
+    for (int num : combined_arr) {
+        if (is_prime(num)) prime_count++;
     }
-    cout << "Введите строку, которую нужно найти (цифры): ";
-    cin >> target;
-    try {
-        for (char c : target) {
-            if (!isdigit(c)) {
-                throw invalid_argument("Как ты в строке из цифр найдешь не цифру?");
-            }
-        }
-    }
-    catch (const invalid_argument& error)
-    {
-        cerr << error.what() << endl;
-        return 1;
-    }
-    auto findStr = [&](const string& seq, const string& sub) -> int {
-        int count = 0;
-        string::const_iterator it = seq.begin();
-        while (it != seq.end()) {
-            it = find(it, seq.end(), sub[0]); 
-            if (it != seq.end()) {
-                if (distance(it, seq.end()) >= sub.length()) {
-                    if (string(it, it + sub.length()) == sub) {
-                        count++;
-                    }
-                }
-                it++;
-            }
-            else {
-                break;
-            }
-        }
-        return count;
-        };
-    int actual_count = findStr(sequence, target);
-    cout << "Количество повторений: " << actual_count << endl;
+    cout << "\nКоличество простых чисел: " << prime_count << endl;
     return 0;
 }
