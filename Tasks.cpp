@@ -1,8 +1,4 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include "tasks.h"
-using namespace std;
+#include "railway.h"
 struct Task {
     string type;
     int number;
