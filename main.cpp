@@ -1,7 +1,6 @@
 #include <iostream>
 #include <iomanip>
 #include "Intes.h"
-#include "random.h"
 #include "railway.h"
 #include "Alien.h"
 #include "planes.h"
