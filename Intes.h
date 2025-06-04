@@ -4,7 +4,9 @@
 #include <iostream>
 #include <array>
 #include <numeric>
+#include <string>
 using namespace std;
 #include "random.h"
-int Casino(int numParties);
-int Massiv();
+int Cars();
+int Ninjago();
+int Console();
