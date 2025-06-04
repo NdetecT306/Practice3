@@ -5,7 +5,9 @@
 #include <functional>
 #include <random>
 #include <map>
+#include <iomanip>
+#include <numeric>
 using namespace std;
-int plain();
+int CoffeeShop();
 int UNO();
 int Console();
