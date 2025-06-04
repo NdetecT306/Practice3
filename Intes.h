@@ -6,7 +6,6 @@
 #include <numeric>
 #include <string>
 using namespace std;
-#include "random.h"
 int Cars();
 int Ninjago();
 int Console();
