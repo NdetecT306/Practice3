@@ -7,7 +7,7 @@
 #include "planes.h"
 using namespace std;
 enum class TaskNumber {
-    Classes= 1,Language,Plain,Games,Trains,POSLEDOV,Uniq,CONSOLE,Uno,TASK
+    Classes= 1,Language,Cofe,CARS,Trains,Serial,Uniq,CONSOLE,Uno,TASK
 };
 int main() 
 {
@@ -19,8 +19,7 @@ int main()
     TaskNumber tasks = static_cast<TaskNumber>(task);
     switch (tasks) 
     {
-    case TaskNumber::Classes: 
-    {
+    case TaskNumber::Classes: {
         battleClass();
         break;
     }
@@ -33,23 +32,15 @@ int main()
         cout << "Господин переводчик сказал: " << alienSentence << endl;
         break;
     }
-    case TaskNumber::Plain: { 
-        plain();
+    case TaskNumber::Cofe: { 
+        CoffeeShop();
         break;
     }
-    case TaskNumber::Games: { 
-        int numParties;
-        cout << "Количество игр: ";
-        cin >> numParties;
-        if (numParties <= 0) {
-            cout << "Это не положительное число." << endl;
-            return 1;
-        }
-        Casino(numParties);
+    case TaskNumber::CARS: { 
+        Cars();
         break;
     }
-    case TaskNumber::Trains:
-    {
+    case TaskNumber::Trains:{
         int n;
         cout << "Количество поездов: ";
         cin >> n;
@@ -57,9 +48,9 @@ int main()
         cout << fixed << setprecision(3) << "Итого: " << totalLoad << endl;
         break;
     }
-    case TaskNumber::POSLEDOV: 
+    case TaskNumber::Serial: 
     { 
-        Massiv();
+        Ninjago();
         break;
     }
     case TaskNumber::Uniq: { 
