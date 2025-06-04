@@ -90,14 +90,6 @@ int UNO() {
     else {
         cout << "Ни у одного игрока нет карт цвета " << targetColor << "." << endl;
     }
-    for (int i = 0; i < numPlayers; ++i) {
-        cout << "Игрок " << i + 1 << endl;
-        sort(hands[i].begin(), hands[i].end());
-        for (const auto& card : hands[i]) {
-            cout << card << "  ";
-        }
-        cout << endl;
-    }
     map<string, int> colorCounts;
     for (const auto& hand : hands) {
         for (const auto& card : hand) {
