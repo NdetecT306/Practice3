@@ -1,79 +1,57 @@
 #include "planes.h"
-struct Airplane {
-    string airline;
-    string destinationCity;
-    string departureTime;
-    friend ostream& operator<<(ostream& os, const Airplane& airplane) {
-        os << "Авиакомпания: " << airplane.airline << ", Город назначения: " << airplane.destinationCity << ", Время вылета: " << airplane.departureTime;
-        return os;
+struct Coffee {
+    string name;
+    double originalPrice;
+    double discountedPrice;
+    Coffee(const string& n, double original, double discounted) : name(n), originalPrice(original), discountedPrice(discounted) {}
+    double getDiscountPercentage() const {
+        return (1 - discountedPrice / originalPrice) * 100;
     }
 };
-Airplane inputAirplaneData() {
-    Airplane plane;
-    cout << "Введите название авиакомпании: ";
-    getline(cin >> ws, plane.airline);
-    cout << "Введите город назначения: ";
-    getline(cin >> ws, plane.destinationCity);
-    cout << "Введите время вылета: ";
-    getline(cin >> ws, plane.departureTime);
-    return plane;
-}
-string toLower(const string& str) {
-    string result = str;
-    for (char& c : result) {
-        c = tolower(static_cast<unsigned char>(c));
-    }
-    return result;
-}
-vector<Airplane> filterAirplanes(const vector<Airplane>& airplanes, const string& criterion, const string& parameter) {
-    vector<Airplane> filteredAirplanes;
-    function<bool(const Airplane&)> matchCriterion;
-    string criterionLower = toLower(criterion);
-    string parameterLower = toLower(parameter);
-    if (criterionLower == "авиакомпания") {
-        matchCriterion = [&](const Airplane& plane) { return toLower(plane.airline) == parameterLower; };
-    }
-    else if (criterionLower == "город") {
-        matchCriterion = [&](const Airplane& plane) { return toLower(plane.destinationCity) == parameterLower; };
-    }
-    else if (criterionLower == "время") {
-        matchCriterion = [&](const Airplane& plane) { return plane.departureTime == parameterLower; };
-    }
+int CoffeeShop() {
+    vector<Coffee> coffeeMenu = {
+        {"Arabica Blend (250g)", 12.50, 9.00},
+        {"Espresso Dark Roast (1kg)", 35.00, 30.00},
+        {"Ethiopian Yirgacheffe (200g)", 18.00, 15.00},
+        {"Sumatra Mandheling (500g)", 28.00, 21.00},
+        {"Colombian Supremo (1kg)", 40.00, 38.00},
+        {"Decaf Blend (250g)", 14.00, 10.00}
+    };
+    auto isDiscountedMoreThan15 = [](const Coffee& coffee) {
+        return coffee.getDiscountPercentage() > 15.0;
+    };
+    vector<Coffee> discountedCoffee;
+    copy_if(coffeeMenu.begin(), coffeeMenu.end(), std::back_inserter(discountedCoffee), isDiscountedMoreThan15);
+    if (discountedCoffee.empty()) {
+        cout << "На данный момент кофе со скидкой более 15% отсутствует в меню." << endl;
+    } 
     else {
-        cout << "Неверный критерий." << endl;
-        return {};
-    }
-    copy_if(airplanes.begin(), airplanes.end(), std::back_inserter(filteredAirplanes), matchCriterion);
-    return filteredAirplanes;
-}
-int plain() {
-    setlocale(LC_ALL, "Russian");
-    vector<Airplane> airplanes;
-    int numAirplanes;
-    cout << "Введите количество самолетов: ";
-    cin >> numAirplanes;
-    cin.ignore(); //  Удаляем символ новой строки после ввода числа самолетов
-    for (int i = 0; i < numAirplanes; ++i) {
-        cout << "Введите данные для самолета " << i + 1 << ":" << endl;
-        airplanes.push_back(inputAirplaneData());
-    }
-    string sortCriterion, sortParameter;
-    cout << "Введите критерий сортировки (авиакомпания, город, время): ";
-    getline(cin >> ws, sortCriterion);
-    cout << "Введите параметр: ";
-    getline(cin >> ws, sortParameter);
-
-    vector<Airplane> filteredAirplanes = filterAirplanes(airplanes, sortCriterion, sortParameter);
-
-    if (filteredAirplanes.empty()) {
-        cout << "Самолеты, соответствующие критериям, не найдены." << endl;
-    }
-    else {
-        cout << "Самолеты, соответствующие критериям:" << endl;
-        for (const auto& plane : filteredAirplanes) {
-            cout << plane << endl;
+        cout << "Специальное предложение на кофе! Скидка более 15%:" << endl;
+        cout << setw(30) << left << "Название сорта"<< setw(15) << "Цена (ориг.)" << setw(15) << "Цена (со скидкой)"<< setw(10) << "Скидка %" << endl;
+        cout << string(70, '-') << endl;
+        for (const auto& coffee : discountedCoffee) {
+            cout << setw(30) << left << coffee.name << fixed << setprecision(2)
+                      << setw(15) << coffee.originalPrice << setw(15) << coffee.discountedPrice
+                      << setw(9)  << fixed << setprecision(1) << coffee.getDiscountPercentage() << "%" << endl;
+        }
+        if (!discountedCoffee.empty()) {
+            double totalDiscount = std::accumulate(discountedCoffee.begin(), discountedCoffee.end(), 0.0,
+                                                   [](double sum, const Coffee& coffee) {
+                                                       return sum + coffee.getDiscountPercentage();
+                                                   });
+            double averageDiscount = totalDiscount / discountedCoffee.size();
+            cout << endl << "Средняя скидка на кофе: " << fixed << setprecision(1) << averageDiscount << "%" << endl;
+            auto isDiscountGreaterThan20 = [](const Coffee& coffee) {
+                return coffee.getDiscountPercentage() > 10.0;
+            };
+            bool allAbove10 = all_of(discountedCoffee.begin(), discountedCoffee.end(), isDiscountGreaterThan20);
+            if (allAbove10) {
+                cout << "Все сорта кофе по акции имеют скидку более 10%!" << endl;
+            } 
+            else {
+                cout << "Не все сорта кофе по акции имеют скидку более 10%." << endl;
+            }
         }
     }
     return 0;
 }
- 
