@@ -1,114 +1,105 @@
 #include "Intes.h"
-int Casino(int numParties){
-    vector<int> initialVal;
-    vector<int> transformedVal;
-    set<int> doubledVal;
-    for (int i = 0; i < numParties; ++i){
-        int inputValue;
-        cout << "Введите число: ";
-        cin >> inputValue;
-        if (inputValue <= 0) {
-            cout << "It is not a right number" << endl;
-            return 1;
-        }
-        initialVal.push_back(inputValue);
+using namespace std;
+struct Car {
+    string make;
+    string model;
+    int mileage;
+    string color;
+    Car(string make, string model, int mileage, string color) :
+        make(make), model(model), mileage(mileage), color(color) {}
+    friend ostream& operator<<(ostream& os, const Car& car) {
+        os << "Make: " << car.make << ", Model: " << car.model << ", Mileage: " << car.mileage << ", Color: " << car.color;
+        return os;
     }
-    for (int value : initialVal) {
-        int choice = RandomNumbers(0, 2);
-        switch (choice) {
-        case 0:
-            transformedVal.push_back(value * 2);
-            break;
-        case 1:
-            transformedVal.push_back(value / 2);
-            break;
-        case 2:
-            transformedVal.push_back(value);
-            break;
-        }
-    }
-    auto isDoubled = [&](int transformedVal, int originalValue) {
-        return transformedVal == originalValue * 2;
-        };
-    for (int i = 0; i < initialVal.size(); ++i) {
-        if (isDoubled(transformedVal[i], initialVal[i])) {
-            doubledVal.insert(initialVal[i]);
-        }
-    }
-    int initialSum = accumulate(initialVal.begin(), initialVal.end(), 0);
-    int transformedSum = accumulate(transformedVal.begin(), transformedVal.end(), 0);
-    cout << "Сумма твоих чисел: " << initialSum << endl << "Итоговая сумма: " << transformedSum << endl << "Удвоенные значения (исходные):" << endl;
-    for (int e : doubledVal) {
-        cout << e << " ";
+};
+int Cars() {
+    vector<Car> cars = {
+        {"Toyota", "Camry", 50000, "Silver"},
+        {"Honda", "Civic", 8000, "Red"},
+        {"Ford", "Mustang", 15000, "White"},
+        {"BMW", "X5", 20000, "Black"},
+        {"Mercedes", "C-Class", 5000, "White"},
+        {"Audi", "A4", 30000, "Gray"},
+        {"Toyota", "Corolla", 9000, "Blue"},
+        {"Ford", "F-150", 60000, "White"},
+        {"Nissan", "Altima", 12000, "Silver"},
+        {"Honda", "CR-V", 7000, "White"}
+    };
+    cars.erase(remove_if(cars.begin(), cars.end(), [](const Car& car) {
+        return car.mileage < 10000;
+    }), cars.end());
+    cout << "Машины с пробегом >= 10000 km:" << endl;
+    for (const auto& car : cars) {
+        cout << car << endl;
     }
     cout << endl;
+    rotate(cars.begin(), cars.begin() + cars.size() - 1, cars.end());
+    cout << "Машины после ротации:" << endl;
+    for (const auto& car : cars) {
+        cout << car << endl;
+    }
+    cout << endl;
+    int whiteCarCount = count_if(cars.begin(), cars.end(), [](const Car& car) {
+        return car.color == "White";
+    });
+    cout << "Число белых машин: " << whiteCarCount << endl;
+    set<string> whiteCarMakes;
+    for_each(cars.begin(), cars.end(), [&whiteCarMakes](const Car& car) {
+        if (car.color == "White") {
+            whiteCarMakes.insert(car.make);
+        }
+    });
+    cout << "Уникальные белые машины:" << endl;
+    for (const auto& make : whiteCarMakes) {
+        cout << make << endl;
+    }
     return 0;
 }
-int Massiv() {
-    auto is_prime = [](int n) {
-        if (n <= 1) return false;
-        for (int i = 2; i * i <= n; ++i) {
-            if (n % i == 0) return false;
-        }
-        return true;
-        };
-    array<int, 10> arr1;
-    array<int, 10> arr2;
-    cout << "Введите 10 чисел для первого массива:\n";
-    for (int i = 0; i < 10;) { 
-        try {
-            cout << "Введите число " << i+1 << ": ";
-            cin >> arr1[i];
-            if (cin.fail()) { 
-                cin.clear();
-                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
-                throw runtime_error("Не число. Введите еще раз.");
-            }
-            ++i; 
-        }
-        catch (const std::runtime_error& e) {
-            cerr << e.what() << std::endl;
-        }
+struct Season {
+    int number;          
+    string title;   
+    double rating;       
+    int episodeCount;    
+    double avgEpisodeLength; 
+};
+int Ninjago() {
+    vector<Season> ninjagoSeasons = {
+        {1, "Пилоты", 7.8, 6, 22.5},
+        {2, "Наследие Зеленого ниндзя", 8.2, 13, 22.5},
+        {3, "Возрождение змей", 8.5, 10, 22.5},
+        {4, "Турнир стихий", 8.3, 10, 22.5},
+        {5, "Отряд титанов", 7.9, 10, 22.5},
+        {6, "Небесные границы", 8.0, 10, 22.5},
+        {7, "Руки времени", 8.1, 10, 22.5},
+        {8, "Сыны Гармадона", 7.5, 30, 22.5},
+        {9, "Они", 8.7, 10, 22.5},
+        {10, "Марш Они", 7.7, 10, 22.5},
+        {11, "Секреты запрещенного Кружитцу", 8.4, 30, 22.5},
+        {12, "Последний фильм", 8.6, 16, 22.5},
+        {13, "Огненные Горы", 8.9, 16, 22.5},
+        {14, "Путешествия в сердце моря", 9.1, 16, 22.5},
+        {15, "Кристализованный", 9.3, 30, 22.5}
+    };
+    cout << "Сезоны Ниндзяго с рейтингом больше 8:" << std::endl;
+    double totalWatchTimeFiltered = 0.0; 
+    double totalWatchTimeAll = 0.0; 
+    for (const auto& season : ninjagoSeasons) {
+        totalWatchTimeAll += season.episodeCount * season.avgEpisodeLength;
     }
-    cout << "Введите 10 чисел для второго массива:\n";
-    for (int i = 0; i < 10; ) { 
-        try {
-            cout << "Введите число " << i + 1 << ": ";
-            cin >> arr2[i];
-            if (cin.fail()) {
-                cin.clear();
-                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                throw runtime_error("Не число. Введите еще раз.");
-            }
-            ++i; 
+    for_each(ninjagoSeasons.begin(), ninjagoSeasons.end(), [&](const Season& season) {
+        if (season.rating > 8.0) {
+            std::cout << "Сезон " << season.number << ": " << season.title << " - Рейтинг: " << season.rating
+                      << " - Серий: " << season.episodeCount << " - Время серии: " << season.avgEpisodeLength << " мин" << std::endl;
+            totalWatchTimeFiltered += season.episodeCount * season.avgEpisodeLength; 
         }
-        catch (const std::runtime_error& e) {
-            cerr << e.what() << endl;
+    });
+    cout << endl << "Сезоны, в которых больше 10 серий (запаситесь попкорном): " << endl; 
+    for_each(ninjagoSeasons.begin(), ninjagoSeasons.end(), [&](const Season& season) {
+        if (season.episodeCount >10) {
+            cout << "Сезон " << season.number << ": " << season.title << " - Рейтинг: " << season.rating
+                      << " - Серий: " << season.episodeCount << " - Время серии: " << season.avgEpisodeLength << " мин" << std::endl;
         }
-    }
-    array<int, 20> combined_arr;
-    copy(arr1.begin(), arr1.end(), combined_arr.begin());
-    copy(arr2.begin(), arr2.end(), combined_arr.begin() + 10);
-    sort(combined_arr.begin(), combined_arr.end(), greater<int>());
-    cout << "\nОбщий массив в порядке убывания:\n";
-    for (int num : combined_arr) cout << num << " ";
-    cout << endl;
-    double sum = accumulate(combined_arr.begin(), combined_arr.end(), 0.0);
-    double average = sum / combined_arr.size();
-    array<int, 20> less_than_average;
-    int less_count = 0;
-    for (int num : combined_arr) {
-        if (num < average) {
-            less_than_average[less_count++] = num;
-        }
-    }
-    cout << "\nМассив чисел, меньших среднего арифметического (" << average << "):\n";
-    for (int i = 0; i < less_count; ++i) cout << less_than_average[i] << " ";
-    cout << endl;
-    int prime_count = 0;
-    for (int num : combined_arr) {
-        if (is_prime(num)) prime_count++;
-    }
-    cout << "\nКоличество простых чисел: " << prime_count << endl;
+    });
+    cout << endl << "Общее время просмотра всего сериала: " << totalWatchTimeAll << " минут" << endl; 
     return 0;
 }
